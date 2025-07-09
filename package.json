@@ -22,5 +22,14 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.1",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Braul-oss/reconocimiento-face-api-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Braul-oss/reconocimiento-face-api-node/issues"
+  },
+  "homepage": "https://github.com/Braul-oss/reconocimiento-face-api-node#readme"
 }
