@@ -44,15 +44,13 @@
         </div>
 
         <div class="action-buttons">
-          <div class="button-group">
-            <button id="start-btn" class="btn btn-success">
-              <i class="fas fa-play"></i> Iniciar
-            </button>
-            <button id="stop-btn" class="btn btn-danger" disabled>
-              <i class="fas fa-stop"></i> Detener
-            </button>
-          </div>
-          <a href="index.html" class="btn btn-secondary1">
+          <button id="start-btn" class="btn btn-primary pulse">
+            <i class="fas fa-play"></i> Iniciar Detección
+          </button>
+          <button id="stop-btn" class="btn btn-primary" disabled>
+            <i class="fas fa-stop"></i> Detener Proceso
+          </button>
+          <a href="index.html" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver al Inicio
           </a>
         </div>
@@ -64,15 +62,15 @@
         <form id="upload-form" method="POST" enctype="multipart/form-data">
           <div class="upload-section">
             <div class="file-input-container">
-              <label class="file-input-label">
+              <label class="btn btn-primary">
                 <i class="fas fa-upload"></i> 
-                <span class="file-input-text">Subir imagen</span>
+                <span>Seleccionar Imagen</span>
                 <input type="file" name="image" accept="image/*" class="file-input" required />
               </label>
             </div>
             
-            <button type="submit" class="btn btn-secondary">
-              <i class="fas fa-search"></i> Identificar
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-search"></i> Identificar Persona
             </button>
           </div>
         </form>
@@ -86,7 +84,7 @@
         </div>
         
         <div class="action-buttons">
-          <a href="index.html" class="btn btn-secondary1">
+          <a href="index.html" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver al Inicio
           </a>
         </div>
@@ -122,12 +120,14 @@
       startIdentification();
       this.disabled = true;
       document.getElementById('stop-btn').disabled = false;
+      this.classList.add('active');
     });
     
     document.getElementById('stop-btn').addEventListener('click', function() {
       stopIdentification();
       this.disabled = true;
       document.getElementById('start-btn').disabled = false;
+      document.getElementById('start-btn').classList.remove('active');
     });
     
     function simulateProcessing(element) {
@@ -141,6 +141,37 @@
       e.preventDefault();
       const resultElement = document.getElementById('upload-result');
       simulateProcessing(resultElement);
+    });
+
+    // Efectos para botones
+    document.querySelectorAll('.btn').forEach(button => {
+      // Efecto de onda al hacer clic
+      button.addEventListener('click', function(e) {
+        if(this.classList.contains('file-input')) return;
+        
+        const x = e.clientX - e.target.getBoundingClientRect().left;
+        const y = e.clientY - e.target.getBoundingClientRect().top;
+        
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple');
+        ripple.style.left = `${x}px`;
+        ripple.style.top = `${y}px`;
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.remove();
+        }, 1000);
+      });
+      
+      // Efecto de hover
+      button.addEventListener('mouseenter', () => {
+        button.style.transform = 'translateY(-2px)';
+      });
+      
+      button.addEventListener('mouseleave', () => {
+        button.style.transform = 'translateY(0)';
+      });
     });
   </script>
   <script src="identify.js"></script>
