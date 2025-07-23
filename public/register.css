@@ -22,7 +22,7 @@ body {
   background-color: #f5f7fa;
   color: var(--dark-color);
   line-height: 1.6;
-  overflow-x: hidden;
+  overflow-x: 1.6;
 }
 
 .container {
@@ -39,12 +39,6 @@ header {
   text-align: center;
   box-shadow: var(--box-shadow);
   margin-bottom: 2rem;
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
 }
 
 h1 {
@@ -60,7 +54,7 @@ h1 {
   gap: 0.75rem;
   color: white;
   border: none;
-  padding: 0.85rem 2rem;
+  padding: 10px 20px; 
   border-radius: var(--border-radius);
   cursor: pointer;
   font-weight: 500;
@@ -95,7 +89,7 @@ h1 {
 }
 
 .btn:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
 }
 
@@ -153,15 +147,32 @@ h1 {
     transform: scale(4);
     opacity: 0;
   }
+  
 }
+/* Efecto de pulso */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(44, 62, 80, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(44, 62, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(44, 62, 80, 0);
+  }
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
 
 /* Contenedor de botones */
 .btn-group {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+  align-items: center;
+  margin-top: 1.5rem;
 }
 
 /* --- Estilos para pestañas --- */
@@ -186,6 +197,7 @@ h1 {
   gap: 0.75rem;
   position: relative;
   border-radius: 0;
+  margin: 0 10px;
 }
 
 .tab-btn i {
@@ -323,7 +335,7 @@ h1 {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.9rem;
-  color: #bceeff;
+  color: #0d0d0e;
   font-style: italic;
 }
 

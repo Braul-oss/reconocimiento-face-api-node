@@ -33,6 +33,9 @@
         <button onclick="register()" class="btn btn-primary">
           <i class="fas fa-save"></i> Registrar Rostro
         </button>
+        <button onclick="clearCameraTab()" class="btn btn-primary">
+          <i class="fas fa-broom"></i> Limpiar Pantalla
+        </button>
         <a href="index.html" class="btn btn-secondary">
           <i class="fas fa-arrow-left"></i> Volver al Inicio
         </a>
@@ -41,17 +44,24 @@
      
     <div id="image-tab" class="tab-content">
       <form id="register-form" method="POST" enctype="multipart/form-data">
-        <div class="form-group file-upload-wrapper">
-          <label class="file-upload-label btn-primary">
-            <i class="fas fa-upload"></i> Seleccionar imagen
-            <input type="file" id="image-upload" name="image" accept="image/*" required />
-          </label>
+        <div class="form-group">
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('image-upload').click()">
+            <i class="fas fa-upload"></i> Seleccionar Imagen
+          </button>
+          <input type="file" id="image-upload" name="image" accept="image/*" style="display: none;" required />
           <span id="file-name" class="file-name"></span>
         </div>
         
+        <div id="image-preview-container" style="margin: 20px 0; display: none;">
+          <img id="register-preview" class="preview-image" />
+        </div>
+        
         <div class="btn-group">
-          <button type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary" id="register-btn" disabled>
             <i class="fas fa-check-circle"></i> Registrar Rostro
+          </button>
+          <button type="button" onclick="clearImageTab()" class="btn btn-primary">
+            <i class="fas fa-broom"></i> Limpiar Pantalla
           </button>
           <a href="index.html" class="btn btn-secondary">
             <i class="fas fa-arrow-left"></i> Volver al Inicio
@@ -60,7 +70,6 @@
       </form>
       
       <div id="register-result" style="display: none;"></div>
-      <img id="register-preview" style="display: none;" />
       
       <h3 style="margin-top: 2rem; color: var(--primary-color);">
         <i class="fas fa-list"></i> Rostros Registrados
@@ -97,15 +106,23 @@
       if(imageUpload) {
         imageUpload.addEventListener('change', function(e) {
           const file = e.target.files[0];
+          const registerBtn = document.getElementById('register-btn');
+          const previewContainer = document.getElementById('image-preview-container');
+          
           if(file) {
             document.getElementById('file-name').textContent = file.name;
+            registerBtn.disabled = false;
+            
             const reader = new FileReader();
             reader.onload = function(event) {
               const preview = document.getElementById('register-preview');
               preview.src = event.target.result;
-              preview.style.display = 'block';
+              previewContainer.style.display = 'block';
             }
             reader.readAsDataURL(file);
+          } else {
+            registerBtn.disabled = true;
+            previewContainer.style.display = 'none';
           }
         });
       }
@@ -114,6 +131,8 @@
       document.querySelectorAll('.btn').forEach(button => {
         // Efecto de onda al hacer clic
         button.addEventListener('click', function(e) {
+          if(this.type === 'file') return;
+          
           const x = e.clientX - e.target.getBoundingClientRect().left;
           const y = e.clientY - e.target.getBoundingClientRect().top;
           
@@ -140,7 +159,34 @@
       });
     });
 
-    // Aquí irían las funciones de register() y demás lógica de tu aplicación
+    // Función para limpiar la pestaña de cámara
+    function clearCameraTab() {
+      const video = document.getElementById('video');
+      const overlay = document.getElementById('overlay');
+      
+      // Detener la transmisión de video
+      if (video.srcObject) {
+        video.srcObject.getTracks().forEach(track => track.stop());
+      }
+      
+      // Limpiar el canvas
+      const context = overlay.getContext('2d');
+      context.clearRect(0, 0, overlay.width, overlay.height);
+      
+      // Reiniciar el video
+      video.srcObject = null;
+    }
+
+    // Función para limpiar la pestaña de imagen
+    function clearImageTab() {
+      document.getElementById('image-upload').value = '';
+      document.getElementById('file-name').textContent = '';
+      document.getElementById('image-preview-container').style.display = 'none';
+      document.getElementById('register-preview').src = '';
+      document.getElementById('register-result').style.display = 'none';
+      document.getElementById('register-result').innerHTML = '';
+      document.getElementById('register-btn').disabled = true;
+    }
   </script>
   <script src="script.js"></script>
   <script src="register.js"></script>
